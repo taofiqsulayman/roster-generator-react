@@ -39,49 +39,57 @@ function App() {
     const [serviceUserInput, setServiceUserInput] = useState("");
     const [taskAssignments, setTaskAssignments] = useState([]);
 
-    function assignTasksToEmployees(employees, serviceUsers) {
-        const taskAssignments = {};
-        let availableEmployees = [...employees]; // Clone the array of employees
+function assignTasksToEmployees(employees, serviceUsers) {
+    const taskAssignments = {};
+    const assignedTimes = {}; // Keep track of assigned times for each employee
+    let availableEmployees = [...employees]; // Clone the array of employees
 
-        serviceUsers.forEach((user) => {
-            user.tasks.forEach((task) => {
-                let assignedEmployee = null;
-                let attempts = 0;
+    serviceUsers.forEach((user) => {
+        user.tasks.forEach((task) => {
+            let assignedEmployee = null;
+            let attempts = 0;
 
-                while (attempts < employees.length) {
-                    if (availableEmployees.length === 0) {
-                        // If all employees have been assigned a task, reset the available employees array
-                        availableEmployees = [...employees];
-                    }
-
-                    const employee = availableEmployees.shift(); // Get the first available employee
-
-                    if (employee.isAvailable(task.taskTime)) {
-                        const employeeName = employee.name;
-                        taskAssignments[employeeName] =
-                            taskAssignments[employeeName] || [];
-
-                        if (
-                            !taskAssignments[employeeName].includes(
-                                task.description
-                            )
-                        ) {
-                            assignedEmployee = employee;
-                            taskAssignments[employeeName].push(
-                                task.description
-                            );
-                            task.assignedEmployee = assignedEmployee;
-                            break;
-                        }
-                    }
-
-                    attempts++;
+            while (attempts < employees.length) {
+                if (availableEmployees.length === 0) {
+                    // If all employees have been assigned a task, reset the available employees array
+                    availableEmployees = [...employees];
                 }
-            });
-        });
 
-        return taskAssignments;
-    }
+                const employee = availableEmployees.shift(); // Get the first available employee
+
+                if (
+                    employee.isAvailable(task.taskTime) &&
+                    !assignedTimes[employee.name]?.includes(task.taskTime)
+                ) {
+                    const employeeName = employee.name;
+                    taskAssignments[employeeName] =
+                        taskAssignments[employeeName] || [];
+
+                    if (
+                        !taskAssignments[employeeName].includes(
+                            task.description
+                        )
+                    ) {
+                        assignedEmployee = employee;
+                        taskAssignments[employeeName].push(task.description);
+                        task.assignedEmployee = assignedEmployee;
+
+                        // Keep track of assigned time for the employee
+                        assignedTimes[employeeName] =
+                            assignedTimes[employeeName] || [];
+                        assignedTimes[employeeName].push(task.taskTime);
+
+                        break;
+                    }
+                }
+
+                attempts++;
+            }
+        });
+    });
+
+    return taskAssignments;
+}
 
     const generateServiceUsersWithTasks = () => {
         const users = [];
@@ -139,12 +147,12 @@ function App() {
                 {Object.entries(taskAssignments).map(([employee, tasks]) => (
                     <div key={employee}>
                         <p>
-                            {employee} whose shift starts at{" "}
+                            {employee} whose shift starts at {" "}
                             {employees
                                 .find((emp) => emp.name === employee)
                                 .shiftStart.toTimeString()
                                 .substring(0, 5)}{" "}
-                            and ends at{" "}
+                            and ends at {" "}
                             {employees
                                 .find((emp) => emp.name === employee)
                                 .shiftEnd.toTimeString()
