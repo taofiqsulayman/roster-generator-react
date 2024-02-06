@@ -147,7 +147,7 @@ function App() {
                         const recommendedStaff =
                             taskObject.recommendedStaff.trim();
                         const task = new Task(
-                            `${taskDescription} for ${userObject.name}`,
+                            taskDescription,
                             taskStartTime,
                             taskEndTime,
                             recommendedStaff
@@ -192,7 +192,11 @@ const renderTasks = () => {
             {Object.entries(taskAssignments).map(([employee, tasks]) => (
                 <div key={employee}>
                     <p>
-                        {employee} whose shift starts at{" "}
+                        {employee} |{" "}
+                        {employees
+                            .find((emp) => emp.name === employee)
+                            .jobTitle} | {" "}
+                        whose shift starts at{" "}
                         {employees
                             .find((emp) => emp.name === employee)
                             .shiftStart.toTimeString()
