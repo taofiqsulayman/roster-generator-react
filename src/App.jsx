@@ -47,61 +47,6 @@ function App() {
     const [serviceUserInput, setServiceUserInput] = useState("");
     const [taskAssignments, setTaskAssignments] = useState([]);
 
-    // function assignTasksToEmployees(employees, serviceUsers) {
-    //     const taskAssignments = {};
-    //     const assignedTimes = {}; // Keep track of assigned times for each employee
-    //     let availableEmployees = [...employees]; // Clone the array of employees
-
-    //     serviceUsers.forEach((user) => {
-    //         user.tasks.forEach((task) => {
-    //             let assignedEmployee = null;
-    //             let attempts = 0;
-
-    //             while (attempts < employees.length) {
-    //                 if (availableEmployees.length === 0) {
-    //                     // If all employees have been assigned a task, reset the available employees array
-    //                     availableEmployees = [...employees];
-    //                 }
-
-    //                 const employee = availableEmployees.shift(); // Get the first available employee
-
-    //                 if (
-    //                     employee.isAvailable(task.startTime) &&
-    //                     !assignedTimes[employee.name]?.includes(task.startTime)
-    //                 ) {
-    //                     const employeeName = employee.name;
-    //                     taskAssignments[employeeName] =
-    //                         taskAssignments[employeeName] || [];
-
-    //                     if (
-    //                         !taskAssignments[employeeName].includes(
-    //                             task.description
-    //                         ) &&
-    //                         employee.jobTitle === task.recommendedStaff
-    //                     ) {
-    //                         assignedEmployee = employee;
-    //                         taskAssignments[employeeName].push(
-    //                             task.description
-    //                         );
-    //                         task.assignedEmployee = assignedEmployee;
-
-    //                         // Keep track of assigned time for the employee
-    //                         assignedTimes[employeeName] =
-    //                             assignedTimes[employeeName] || [];
-    //                         assignedTimes[employeeName].push(task.startTime);
-
-    //                         break;
-    //                     }
-    //                 }
-
-    //                 attempts++;
-    //             }
-    //         });
-    //     });
-
-    //     return taskAssignments;
-    // }
-
     const assignTasksToEmployees = (employees, serviceUsers) => {
         const taskAssignments = {};
         const assignedTimes = {};
@@ -111,7 +56,10 @@ function App() {
                 const matchingEmployees = employees.filter(
                     (emp) =>
                         emp.jobTitle === task.recommendedStaff &&
-                        emp.isAvailable(task.startTime)
+                        emp.isAvailable(task.startTime) &&
+                        emp.isAvailable(task.endTime) && // Check employee's availability at task end time
+                        !assignedTimes[emp.name]?.includes(task.startTime) && // Ensure employee is not already assigned at task start time
+                        !assignedTimes[emp.name]?.includes(task.endTime) // Ensure employee is not already assigned at task end time
                 );
 
                 if (matchingEmployees.length > 0) {
@@ -123,6 +71,7 @@ function App() {
                     assignedTimes[employeeName] =
                         assignedTimes[employeeName] || [];
                     assignedTimes[employeeName].push(task.startTime);
+                    assignedTimes[employeeName].push(task.endTime);
                 }
             });
         });
