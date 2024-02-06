@@ -132,12 +132,11 @@
   }
 ]
 
-//  [
-//    John Doe, Care Assistant, 08:00:00, 16:00:00
-//    Jane Smith, Nurse, 08:00:00, 16:00:00
-//    Bob Johnson, Care Assistant, 10:00:00, 18:00:00
-//    Emily Davis, Nurse, 10:00:00, 18:00:00
-//    Alex Turner, Care Assistant, 12:00:00, 20:00:00
-//    Sara White, Nurse, 12:00:00, 20:00:00
-//    Mike Brown, Care Assistant, 14:00:00, 22:00:00
-//  ]
+
+John Doe, Care Assistant, 08:00:00, 16:00:00
+Jane Smith, Nurse, 08:00:00, 16:00:00
+Bob Johnson, Care Assistant, 10:00:00, 18:00:00
+Emily Davis, Nurse, 10:00:00, 18:00:00
+Alex Turner, Care Assistant, 12:00:00, 20:00:00
+Sara White, Nurse, 12:00:00, 20:00:00
+Mike Brown, Care Assistant, 14:00:00, 22:00:00

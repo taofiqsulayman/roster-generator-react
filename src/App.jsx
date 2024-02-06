@@ -41,8 +41,8 @@ function App() {
 
 function assignTasksToEmployees(employees, serviceUsers) {
     const taskAssignments = {};
-    const assignedTimes = {}; // Keep track of assigned times for each employee
-    let availableEmployees = [...employees]; // Clone the array of employees
+    const assignedTimes = {};
+    let availableEmployees = [...employees]; 
 
     serviceUsers.forEach((user) => {
         user.tasks.forEach((task) => {
