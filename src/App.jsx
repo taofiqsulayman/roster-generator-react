@@ -4,6 +4,7 @@ import testData from "./test_input";
 // Function to assign tasks to employees and group tasks by employee
 function assignTasksToEmployees(employees, serviceUsers) {
     const assignmentsByEmployee = {};
+    const unassignedTasks = [];
 
     // Initialize assignmentsByEmployee with employee names as keys
     employees.forEach((employee) => {
@@ -48,9 +49,19 @@ function assignTasksToEmployees(employees, serviceUsers) {
                     task.startTime,
                     task.endTime
                 );
+            } else {
+                // No eligible employees, add task to unassigned tasks
+                unassignedTasks.push({
+                    serviceUser: serviceUser.name,
+                    task: task.description,
+                    startTime: task.startTime,
+                    endTime: task.endTime,
+                });
             }
         }
     }
+
+    console.log("Unassigned tasks: ", unassignedTasks);
 
     return assignmentsByEmployee;
 }
