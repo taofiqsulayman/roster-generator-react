@@ -56,6 +56,7 @@ function assignTasksToEmployees(employees, serviceUsers) {
                     task: task.description,
                     startTime: task.startTime,
                     endTime: task.endTime,
+                    recommendedStaff: task.recommendedStaff,
                 });
             }
         }
