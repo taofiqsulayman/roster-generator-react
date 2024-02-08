@@ -1,7 +1,6 @@
 import { useState } from "react";
 import testData from "./test_input";
 
-// Function to assign tasks to employees and group tasks by employee
 function assignTasksToEmployees(employees, serviceUsers) {
     const assignmentsByEmployee = {};
     const unassignedTasks = [];
@@ -11,9 +10,8 @@ function assignTasksToEmployees(employees, serviceUsers) {
         assignmentsByEmployee[employee.name] = [];
     });
 
-    // Iterate through each service user
     for (const serviceUser of serviceUsers) {
-        // Iterate through each task of the service user
+
         for (const task of serviceUser.tasks) {
             // Find eligible employees for the task
             const eligibleEmployees = filterEmployeesByExpertiseAndAvailability(
