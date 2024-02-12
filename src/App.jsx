@@ -11,6 +11,7 @@ function assignTasksToEmployees(employees, serviceUsers) {
             let assignedEmployee = null;
             let attempts = 0;
 
+            // First try to assign to a qualified employee
             while (!assignedEmployee && attempts < availableEmployees.length) {
                 const employee = availableEmployees[attempts]; // Get the employee based on attempts
 
@@ -35,15 +36,41 @@ function assignTasksToEmployees(employees, serviceUsers) {
 
                 attempts++;
             }
+
+            // If no qualified employee was found, assign to the next available employee in the same shift
+            if (!assignedEmployee) {
+                attempts = 0;
+                while (
+                    !assignedEmployee &&
+                    attempts < availableEmployees.length
+                ) {
+                    const employee = availableEmployees[attempts];
+
+                    if (employee.shift === task.timeOfDay) {
+                        const employeeName = `${employee.firstName} ${employee.lastName}`;
+                        taskAssignments[employeeName] =
+                            taskAssignments[employeeName] || [];
+
+                        if (
+                            !taskAssignments[employeeName].find(
+                                (t) => t.taskId === task.taskId
+                            )
+                        ) {
+                            assignedEmployee = employee;
+                            taskAssignments[employeeName].push(task);
+                        }
+                    }
+
+                    attempts++;
+                }
+            }
         });
     });
 
-    console.log('Task Assignments', taskAssignments);
+    console.log("Task Assignments", taskAssignments);
 
     return taskAssignments;
 }
-
-
 
 function App() {
     // const [taskAssignments, setTaskAssignments] = useState([]);
