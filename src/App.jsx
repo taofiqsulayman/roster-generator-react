@@ -9,6 +9,8 @@ function App() {
 
     const employees = testData.employees;
     const tasks = testData.tasks;
+    const serviceUsers = [...new Set(tasks.map((task) => task.su))];
+
 
     useEffect(() => {
         const {
@@ -52,23 +54,40 @@ function App() {
                                     <td>
                                         {empDetails && (
                                             <div>
-                                                {empDetails.shift.start} - {empDetails.shift.end}
+                                                {empDetails.shift.start} -{" "}
+                                                {empDetails.shift.end}
                                             </div>
                                         )}
                                     </td>
                                     <td>
-                                        {empDetails && <div>{empDetails.role}</div>}
+                                        {empDetails && (
+                                            <div>{empDetails.role}</div>
+                                        )}
                                     </td>
                                     <td>
                                         <ul>
-                                            {employeeTasks[employee].map((task) => (
-                                                <li key={`${task.time} + ${task.su}`}>
-                                                    <span>{task.time}</span>
-                                                    <span>{task.su}</span>
-                                                    <span>Recommended support: {task.supportPersonel}</span>
-                                                    <span>Number of support: {task.noSupportPersonel}</span>
-                                                </li>
-                                            ))}
+                                            {employeeTasks[employee].map(
+                                                (task) => (
+                                                    <li
+                                                        key={`${task.time} + ${task.su}`}
+                                                    >
+                                                        <span>{task.time}</span>
+                                                        <span>{task.su}</span>
+                                                        <span>
+                                                            Recommended support:{" "}
+                                                            {
+                                                                task.supportPersonel
+                                                            }
+                                                        </span>
+                                                        <span>
+                                                            Number of support:{" "}
+                                                            {
+                                                                task.noSupportPersonel
+                                                            }
+                                                        </span>
+                                                    </li>
+                                                )
+                                            )}
                                         </ul>
                                     </td>
                                 </tr>
@@ -77,30 +96,62 @@ function App() {
                     </tbody>
                 </table>
             </div>
+
             <div className="service-users">
-                <h2>Service Users</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Service User</th>
-                            <th>Assigned Employees</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Object.keys(serviceUserAssignedEmployees).map((serviceUser) => (
-                            <tr key={serviceUser}>
-                                <td>{serviceUser}</td>
-                                <td>
-                                    <ul>
-                                        {serviceUserAssignedEmployees[serviceUser].map((employee) => (
-                                            <li key={employee}>{employee}</li>
-                                        ))}
-                                    </ul>
-                                </td>
+                <div>
+                    <h2>Service Users</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Service User</th>
+                                <th>Assigned Employees</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {Object.keys(serviceUserAssignedEmployees).map(
+                                (serviceUser) => (
+                                    <tr key={serviceUser}>
+                                        <td>{serviceUser}</td>
+                                        <td>
+                                            <ul>
+                                                {serviceUserAssignedEmployees[
+                                                    serviceUser
+                                                ].map((employee) => (
+                                                    <li key={employee}>
+                                                        {employee}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h3>Employees</h3>
+                    {employees.map((employee) => {
+                        return (
+                            <div key={employee.name}>
+                                <p>{employee.name}</p>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div>
+                    <h3>Service Users</h3>
+                    {serviceUsers.map((su) => {
+                        return (
+                            <div key={su}>
+                                <p>{su}</p>
+                            </div>
+                        );
+                    })}
+                </div>
+
             </div>
         </div>
     );
