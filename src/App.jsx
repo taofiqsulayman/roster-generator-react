@@ -67,9 +67,9 @@ function App() {
                                     <td>
                                         <ul>
                                             {employeeTasks[employee].map(
-                                                (task) => (
+                                                (task, index) => (
                                                     <li
-                                                        key={`${task.time} + ${task.su}`}
+                                                        key={`${task.time} + ${task.su}` + index}
                                                     >
                                                         <span>{task.time}</span>
                                                         <span>{task.su}</span>
