@@ -3,62 +3,120 @@ import testData from "./test_input";
 import { runTaskAssignment } from "./su-assign";
 
 function App() {
-  const [taskAssignments, setTaskAssignments] = useState([]);
+    const [employeeTasks, setEmployeeTasks] = useState([]);
+    const [employeeAssignedServiceUsers, setEmployeeAssignedServiceUsers] = useState([]);
+    const [serviceUserAssignedEmployees, setServiceUserAssignedEmployees] = useState([]);
 
-  useEffect(() => {
-    const {
-      suAndAssignedEmployees,
-      employeeAndAssignedSu,
-      employeeAndAssignedTasks,
-    } = runTaskAssignment(testData.employees, testData.tasks);
+    const employees = testData.employees;
+    const tasks = testData.tasks;
 
-    console.log({
-      suAndAssignedEmployees,
-      employeeAndAssignedSu,
-      employeeAndAssignedTasks,
-    });
-  }, []);
+    useEffect(() => {
+        const {
+            suAndAssignedEmployees,
+            employeeAndAssignedSu,
+            employeeAndAssignedTasks,
+        } = runTaskAssignment(employees, tasks);
 
-  // Function to generate task assignments
-  const generateTaskAssignments = () => {
-    const assignments = assignTasksToEmployees(employees, serviceUsers);
-    setTaskAssignments(assignments);
-  };
+        setEmployeeTasks(employeeAndAssignedTasks);
+        setEmployeeAssignedServiceUsers(employeeAndAssignedSu);
+        setServiceUserAssignedEmployees(suAndAssignedEmployees);
 
-  return (
-    <div>
-      <h1>Task Assignments</h1>
-      <button onClick={generateTaskAssignments}>
-        Generate Task Assignment
-      </button>
-      <div>
-        {Object.keys(taskAssignments).map((employeeName, index) => (
-          <div key={index}>
-            <h3>
-              {employeeName} |{" "}
-              {employees.find((emp) => emp.name === employeeName).jobTitle} |
-              whose shift starts at{" "}
-              {employees.find((emp) => emp.name === employeeName).shiftStart}
-              {" and ends at "}
-              {employees.find((emp) => emp.name === employeeName).shiftEnd}
-            </h3>
-            <ul>
-              {taskAssignments[employeeName].map(
-                (assignment, assignmentIndex) => (
-                  <li key={assignmentIndex}>
-                    Service User: {assignment.serviceUser}, Task:{" "}
-                    {assignment.task}, Start Time: {assignment.startTime}, End
-                    Time: {assignment.endTime}, Recommended staff:{" "}
-                    {assignment.recommendedStaff}
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+        console.log({
+            suAndAssignedEmployees,
+            employeeAndAssignedSu,
+            employeeAndAssignedTasks,
+        });
+    }, []);
+
+    return (
+        <div className="roster">
+            <div className="employees">
+                <h2>Employees</h2>
+                <ul>
+                    {Object.keys(employeeTasks).map(employee => (
+                        <li key={employee}>
+                            <h3>{employee}</h3>
+                            <ul>
+                                {employeeTasks[employee].map(task => (
+                                    <li key={task.time}>
+                                        <span>{task.time} </span>
+                                        <span> {task.su}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="service-users">
+                <h2>Service Users</h2>
+                <ul>
+                    {Object.keys(serviceUserAssignedEmployees).map(serviceUser => (
+                        <li key={serviceUser}>
+                            <h3>{serviceUser}</h3>
+                            <ul>
+                                {serviceUserAssignedEmployees[serviceUser].map(employee => (
+                                    <li key={employee}>{employee}</li>
+                                ))}
+                            </ul>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+        // <div>
+        //     <h1>Task Assignments</h1>
+
+        //     <h2>Employees and Their Assigned Service Users and Tasks</h2>
+        //     <ul>
+        //         {Object.keys(employeeTasks).map((employee) => (
+        //             <li key={employee}>
+        //                 <h3>{employee}</h3>
+        //                 <ul>
+        //                     <li>
+        //                         Assigned Service Users:
+        //                         <ul>
+        //                             {employeeAssignedServiceUsers[employee].map(
+        //                                 (su) => (
+        //                                     <li key={su}>{su}</li>
+        //                                 )
+        //                             )}
+        //                         </ul>
+        //                     </li>
+        //                     <li>
+        //                         Assigned Tasks:
+        //                         <ul>
+        //                             {employeeTasks[employee].map((task) => (
+        //                                 <li key={`${task.time}-${task.su}`}>
+        //                                     {task.time} - {task.su}
+        //                                 </li>
+        //                             ))}
+        //                         </ul>
+        //                     </li>
+        //                 </ul>
+        //             </li>
+        //         ))}
+        //     </ul>
+
+        //     <h2>Service Users and Their Assigned Employees</h2>
+        //     <ul>
+        //         {Object.keys(serviceUserAssignedEmployees).map(
+        //             (serviceUser) => (
+        //                 <li key={serviceUser}>
+        //                     <h3>{serviceUser}</h3>
+        //                     <ul>
+        //                         {serviceUserAssignedEmployees[serviceUser].map(
+        //                             (employee) => (
+        //                                 <li key={employee}>{employee}</li>
+        //                             )
+        //                         )}
+        //                     </ul>
+        //                 </li>
+        //             )
+        //         )}
+        //     </ul>
+        // </div>
+    );
 }
 
 export default App;
