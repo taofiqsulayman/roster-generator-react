@@ -14,11 +14,14 @@ export const runTaskAssignment = (employees, tasks) => {
   const employeeAndAssignedSu = {};
   const employeeAndAssignedTasks = {};
 
-  tasks.forEach((task) => {
+  tasks.forEach((task, index) => {
     // Initialize suAndAssignedEmployees if not already initialized
     if (!suAndAssignedEmployees[task.su]) {
       suAndAssignedEmployees[task.su] = [];
     }
+
+    // Adding unique descriptions to each task
+    task.description = `Task - ${index + 1}`;
 
     employees.forEach((employee) => {
       let score = 0;

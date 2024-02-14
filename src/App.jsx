@@ -73,6 +73,7 @@ function App() {
                                                     >
                                                         <span>{task.time}</span>
                                                         <span>{task.su}</span>
+                                                        <span>Task: {task.description}</span>
                                                         <span>
                                                             Recommended support:{" "}
                                                             {
