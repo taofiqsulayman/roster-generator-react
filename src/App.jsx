@@ -22,18 +22,12 @@ function App() {
         setEmployeeTasks(employeeAndAssignedTasks);
         setEmployeeAssignedServiceUsers(employeeAndAssignedSu);
         setServiceUserAssignedEmployees(suAndAssignedEmployees);
-
-        console.log({
-            suAndAssignedEmployees,
-            employeeAndAssignedSu,
-            employeeAndAssignedTasks,
-        });
     }, []);
 
     return (
         <div className="roster">
             <div className="employees">
-                <h2>Employees</h2>
+                <h2>Tasks Schedule</h2>
                 <table>
                     <thead>
                         <tr>
@@ -69,11 +63,17 @@ function App() {
                                             {employeeTasks[employee].map(
                                                 (task, index) => (
                                                     <li
-                                                        key={`${task.time} + ${task.su}` + index}
+                                                        key={
+                                                            `${task.time} + ${task.su}` +
+                                                            index
+                                                        }
                                                     >
                                                         <span>{task.time}</span>
                                                         <span>{task.su}</span>
-                                                        <span>Task: {task.description}</span>
+                                                        <span>
+                                                            Task:{" "}
+                                                            {task.description}
+                                                        </span>
                                                         <span>
                                                             Recommended support:{" "}
                                                             {
@@ -99,6 +99,36 @@ function App() {
             </div>
 
             <div className="service-users">
+                <div className="assigned-service-users">
+                    <h2>Employees</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Assigned Service Users</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(employeeAssignedServiceUsers).map(
+                                (employee) => (
+                                    <tr key={employee}>
+                                        <td>{employee}</td>
+                                        <td>
+                                            <ul>
+                                                {employeeAssignedServiceUsers[
+                                                    employee
+                                                ].map((su) => (
+                                                    <li key={su}>{su}</li>
+                                                ))}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
                 <div>
                     <h2>Service Users</h2>
                     <table>
@@ -132,7 +162,7 @@ function App() {
                 </div>
 
                 <div>
-                    <h3>Employees</h3>
+                    <h3>List of Employees</h3>
                     {employees.map((employee) => {
                         return (
                             <div key={employee.name}>
@@ -143,7 +173,7 @@ function App() {
                 </div>
 
                 <div>
-                    <h3>Service Users</h3>
+                    <h3>List of Service Users</h3>
                     {serviceUsers.map((su) => {
                         return (
                             <div key={su}>
@@ -152,7 +182,6 @@ function App() {
                         );
                     })}
                 </div>
-
             </div>
         </div>
     );
